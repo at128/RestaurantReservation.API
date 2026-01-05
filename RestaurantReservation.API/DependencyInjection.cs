@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.API.Validations.Reservations;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Respositories;
-
 namespace RestaurantReservation.API
 {
     public static class DependencyInjection
@@ -11,6 +12,9 @@ namespace RestaurantReservation.API
             services.AddEndpointsApiExplorer()
                     .AddSwaggerGen()
                     .AddProblemDetails();
+
+
+            services.AddValidatorsFromAssemblyContaining<CreateReservationRequestValidator>();
 
 
             services.AddDbContext<RestaurantReservationDbContext>(options =>

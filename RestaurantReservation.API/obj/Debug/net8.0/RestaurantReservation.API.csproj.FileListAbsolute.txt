@@ -75,3 +75,5 @@ C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-C
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation.API\obj\Debug\net8.0\RestaurantReservation.API.pdb
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation.API\obj\Debug\net8.0\RestaurantReservation.API.genruntimeconfig.cache
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation.API\obj\Debug\net8.0\ref\RestaurantReservation.API.dll
+C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation.API\bin\Debug\net8.0\FluentValidation.dll
+C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation.API\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
