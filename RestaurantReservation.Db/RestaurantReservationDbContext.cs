@@ -22,9 +22,28 @@ namespace RestaurantReservation.Db
         public DbSet<MenuItem> MenuItems { get; set; }
 
 
+        public RestaurantReservationDbContext(DbContextOptions<RestaurantReservationDbContext> options)
+    : base(options)
+        {
+        }
+
+        public RestaurantReservationDbContext()
+    : base()
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("RestaurantReservationConStr"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                var cs = Environment.GetEnvironmentVariable("RestaurantReservationConStr");
+
+                if (string.IsNullOrWhiteSpace(cs))
+                    throw new InvalidOperationException(
+                        "Missing connection string. Set env var: RestaurantReservationConStr"
+                    );
+
+                optionsBuilder.UseSqlServer(cs);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
