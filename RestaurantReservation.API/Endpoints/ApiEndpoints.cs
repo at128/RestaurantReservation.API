@@ -4,7 +4,7 @@
     {
         public static IEndpointRouteBuilder MapApi(this IEndpointRouteBuilder app)
         {
-            var api = app.MapGroup("api");
+            var api = app.MapGroup("/api");
 
             api.MapReservationEndpoints();
 

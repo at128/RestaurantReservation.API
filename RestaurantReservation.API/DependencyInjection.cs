@@ -19,7 +19,7 @@ namespace RestaurantReservation.API
 
             services.AddDbContext<RestaurantReservationDbContext>(options =>
             {
-                string connection = configuration.GetSection("Default").Value
+                string connection = configuration.GetConnectionString("DefaultConnection")
                     ?? Environment.GetEnvironmentVariable("RestaurantReservationConStr")!;
 
                 if(string.IsNullOrEmpty(connection))
