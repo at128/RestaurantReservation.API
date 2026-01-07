@@ -16,6 +16,9 @@ namespace RestaurantReservation.API.Endpoints
             group.MapGet("/" , GetReservations);
             group.MapGet("/{id:int}", GetReservationById);
             group.MapGet("/customer/{customerId:int}", GetReservationsByCustomer);
+            group.MapGet("/{reservationId:int}/orders", GetReservationOrders);
+            group.MapGet("/{reservationId:int}/menuitems", GetReservationMenuItems);
+           
 
             group.MapPost("/", Createreservation)
                 .AddEndpointFilter<ValidationFilter<CreateReservationRequest>>();
@@ -26,10 +29,67 @@ namespace RestaurantReservation.API.Endpoints
 
             group.MapDelete("/{id:int}", DeleteReservation);
 
-            return app;
+            return group;
         }
 
-       
+        private static async Task<IResult> GetReservationMenuItems(int reservationId, RestaurantReservationDbContext db, CancellationToken ct)
+        {
+            var result = await db.Orders
+                .AsNoTracking()
+                .Where(o => o.ReservationId == reservationId)
+                .SelectMany(o => o.OrderItems.Select(oi => new
+                {
+                    oi.MenuItemId,
+                    oi.MenuItem.Name,
+                    oi.MenuItem.Description,
+                    oi.MenuItem.Price,
+                    oi.Quantity
+                }))
+                .GroupBy(x => new
+                {
+                    x.MenuItemId,
+                    x.Name,
+                    x.Description,
+                    x.Price
+                })
+                .Select(g => new OrderedMenuItemResponse(
+                    g.Key.MenuItemId,
+                    g.Key.Name,
+                    g.Key.Description,
+                    g.Key.Price,
+                    g.Sum(x => x.Quantity)
+                ))
+                .ToListAsync(ct);
+
+            return Results.Ok(result);
+        }
+
+
+        private static async Task<IResult> GetReservationOrders(int reservationId, RestaurantReservationDbContext db,CancellationToken ct)
+        {
+            var orders = await db.Orders
+                .AsNoTracking()
+                .Where(o => o.ReservationId == reservationId)
+                .OrderBy(o => o.OrderDate)
+                .Select(o => new ReservationOrderResponse
+                (
+                    o.OrderId,
+                    o.OrderDate,
+                    o.TotalAmount,
+                    o.EmployeeId,
+
+                    o.OrderItems.Select(oi => new ReservationOrderItemResponse(
+                        oi.OrderItemId,
+                        oi.MenuItemId,
+                        oi.MenuItem.Name,
+                        oi.Quantity,
+                        oi.UnitPrice
+                        )).ToList()
+                ))
+                .ToListAsync(ct);
+
+            return Results.Ok(orders);
+        }
 
         private static async Task<IResult> UpdateReservation(int id,UpdateReservationRequest req,RestaurantReservationDbContext db ,CancellationToken ct)
         {
