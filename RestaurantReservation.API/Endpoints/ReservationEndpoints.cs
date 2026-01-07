@@ -17,7 +17,7 @@ namespace RestaurantReservation.API.Endpoints
             group.MapGet("/{id:int}", GetReservationById);
             group.MapGet("/customer/{customerId:int}", GetReservationsByCustomer);
             group.MapGet("/{reservationId:int}/orders", GetReservationOrders);
-            group.MapGet("/{reservationId:int}/menuitems", GetReservationMenuItems);
+            group.MapGet("/{reservationId:int}/menu-items", GetReservationMenuItems);
 
 
             group.MapPost("/", CreateReservation)
@@ -241,16 +241,8 @@ namespace RestaurantReservation.API.Endpoints
             return Results.NoContent();
         }
 
-        private static async Task<bool> CustomerExists(int customerId, RestaurantReservationDbContext db, CancellationToken ct)
-        {
-            return await db.Customers.AnyAsync(c => c.CustomerId == customerId, ct);
-        }
 
 
-        private static async Task<bool> TableExists(int tableId, RestaurantReservationDbContext db, CancellationToken ct)
-        {
-            return await db.Tables.AnyAsync(t => t.TableId == tableId, ct);
-        }
 
         private static async Task<bool> ReservationExists(int reservationId, RestaurantReservationDbContext db, CancellationToken ct)
         {
