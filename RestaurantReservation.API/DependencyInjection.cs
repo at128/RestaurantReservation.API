@@ -17,7 +17,6 @@ namespace RestaurantReservation.API
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEndpointsApiExplorer()
-                    .AddSwaggerGen()
                     .AddProblemDetails()
                     .AddDbContexts(configuration)
                     .AddJwtAuthentication(configuration)
