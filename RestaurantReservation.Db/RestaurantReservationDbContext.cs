@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
+using RestaurantReservation.Db.Models.Identity;
+using RestaurantReservation.Db.Seeding;
 using RestaurantReservation.Db.Views;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,12 @@ namespace RestaurantReservation.Db
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
 
+        public DbSet<AppUser> AppUsers => Set<AppUser>();
+        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<Permission> Permissions => Set<Permission>();
+        public DbSet<UserRole> UserRoles => Set<UserRole>();
+        public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         public RestaurantReservationDbContext(DbContextOptions<RestaurantReservationDbContext> options)
     : base(options)
@@ -49,6 +57,11 @@ namespace RestaurantReservation.Db
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            AuthorizationSeed.Seed(modelBuilder);
+
+            modelBuilder.Entity<UserRole>().HasKey(x => new { x.UserId, x.RoleId });
+            modelBuilder.Entity<RolePermission>().HasKey(x => new { x.RoleId, x.PermissionId });
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
