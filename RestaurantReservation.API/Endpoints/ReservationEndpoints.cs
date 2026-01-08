@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.API.Authorization;
 using RestaurantReservation.API.Contracts.Reservations;
 using RestaurantReservation.API.Filters;
 using RestaurantReservation.Db;
@@ -13,21 +14,33 @@ namespace RestaurantReservation.API.Endpoints
             var group = app.MapGroup("/reservations")
                 .WithTags("Reservations");
 
-            group.MapGet("/", GetReservations);
-            group.MapGet("/{id:int}", GetReservationById);
-            group.MapGet("/customer/{customerId:int}", GetReservationsByCustomer);
-            group.MapGet("/{reservationId:int}/orders", GetReservationOrders);
-            group.MapGet("/{reservationId:int}/menu-items", GetReservationMenuItems);
+            group.MapGet("/", GetReservations)
+                .RequireAuthorization(Permission.Reservations.Read);
+
+            group.MapGet("/{id:int}", GetReservationById)
+                .RequireAuthorization(Permission.Reservations.Read);
+
+            group.MapGet("/customer/{customerId:int}", GetReservationsByCustomer)
+                .RequireAuthorization(Permission.Reservations.Read);
+
+            group.MapGet("/{reservationId:int}/orders", GetReservationOrders)
+                .RequireAuthorization(Permission.Reservations.Read);
+
+            group.MapGet("/{reservationId:int}/menu-items", GetReservationMenuItems)
+                .RequireAuthorization(Permission.Reservations.Read);
 
 
             group.MapPost("/", CreateReservation)
-                .AddEndpointFilter<ValidationFilter<CreateReservationRequest>>();
+                .AddEndpointFilter<ValidationFilter<CreateReservationRequest>>()
+                .RequireAuthorization(Permission.Reservations.Create);
 
 
             group.MapPut("/{id:int}", UpdateReservation)
-                .AddEndpointFilter<ValidationFilter<UpdateReservationRequest>>();
+                .AddEndpointFilter<ValidationFilter<UpdateReservationRequest>>()
+                .RequireAuthorization(Permission.Reservations.Update);
 
-            group.MapDelete("/{id:int}", DeleteReservation);
+            group.MapDelete("/{id:int}", DeleteReservation)
+                .RequireAuthorization(Permission.Reservations.Delete);
 
             return group;
         }

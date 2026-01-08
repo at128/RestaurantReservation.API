@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.API.Authorization;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Respositories;
 
@@ -11,8 +12,10 @@ namespace RestaurantReservation.API.Endpoints
             var group = app.MapGroup("/employees")
                 .WithTags("Employees");
 
-            group.MapGet("/managers", GetManagers);
-            group.MapGet("/{employeeId:int}/average=order-amount", GetAverageOrderAmount);
+            group.MapGet("/managers", GetManagers)
+                .RequireAuthorization(Permission.Employees.ViewManagers);
+            group.MapGet("/{employeeId:int}/average=order-amount", GetAverageOrderAmount)
+                .RequireAuthorization(Permission.Employees.ViewAverageOrderAmount);
 
 
             return group;

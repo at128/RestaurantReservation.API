@@ -7,6 +7,8 @@
             var api = app.MapGroup("/api");
 
             api.MapReservationEndpoints();
+            api.MapEmployeeEndpoints();
+            api.MapAuthEndpoints();
 
             return app;
         }

@@ -1,6 +1,40 @@
 @RestaurantReservation.API = http://localhost:5276
+@AccessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMSIsImVtYWlsIjoiYWRtaW5AbG9jYWwudGVzdCIsImdpdmVuX25hbWUiOiJBZG1pbiIsImZhbWlseV9uYW1lIjoiVXNlciIsInJvbGUiOiJBZG1pbiIsInBlcm1pc3Npb24iOlsiUmVzZXJ2YXRpb25zLkNyZWF0ZSIsIlJlc2VydmF0aW9ucy5SZWFkIiwiUmVzZXJ2YXRpb25zLlVwZGF0ZSIsIlJlc2VydmF0aW9ucy5EZWxldGUiLCJSZXNlcnZhdGlvbnMuT3JkZXJzLlJlYWQiLCJSZXNlcnZhdGlvbnMuTWVudUl0ZW1zLlJlYWQiLCJFbXBsb3llZXMuVmlld01hbmFnZXJzIiwiRW1wbG95ZWVzLlZpZXdBdmdPcmRlckFtb3VudCJdLCJuYmYiOjE3Njc4NjA1MzAsImV4cCI6MTc2Nzg2MTEzMCwiaWF0IjoxNzY3ODYwNTMwLCJpc3MiOiJSZXN0YXVyYW50UmVzZXJ2YXRpb24iLCJhdWQiOiJSZXN0YXVyYW50UmVzZXJ2YXRpb25DbGllbnRzIn0.itqQQ82Fywx62lIb4cKIPElUtVU2fPyKjGTyRy5LRfU
+@RefreshToken = GW44LNGpcwLYNP3idAHB31Y1Y04GfExabUSQj2PM1TSbfUtx53B4TovvFz50MrskYp3KZZHfJJf+tuvlT6U1Wg==
 
-GET {{RestaurantReservation.API}}/reservations
-Accept: application/json
+POST {{RestaurantReservation.API}}/api/auth/login
+Content-Type: application/json
+{
+  "Username": "admin@local.test",
+  "Password": "Admin@12345"
+}
 
 ###
+POST {{RestaurantReservation.API}}/api/auth/refresh
+Content-Type: application/json
+{
+  "RefreshToken" : "{{RefreshToken}}"
+}
+
+###
+Get {{RestaurantReservation.API}}/api/reservations
+Authorization: Bearer {{AccessToken}}
+
+###
+# 4) POST reservation (ÌÕ›Ÿ reservationId  ·ﬁ«∆Ì«)
+POST {{RestaurantReservation.API}}/api/reservations
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "tableId": 1,
+  "partySize": 2,
+  "reservationDate": "2026-02-01T19:00:00Z"
+}
+
+
+###
+# 10) Different Queries: Menu items for reservation
+GET {{RestaurantReservation.API}}/api/reservations/1/menu-items
+Authorization: Bearer {{AccessToken}}
