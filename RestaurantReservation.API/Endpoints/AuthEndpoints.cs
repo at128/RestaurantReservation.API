@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.API.Contracts.Auth;
+using RestaurantReservation.API.Filters;
 using RestaurantReservation.API.Identity;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Models.Identity;
+using LoginRequest = RestaurantReservation.API.Contracts.Auth.LoginRequest;
 
 namespace RestaurantReservation.API.Endpoints
 {
@@ -14,10 +16,23 @@ namespace RestaurantReservation.API.Endpoints
         {
             var auth = api.MapGroup("/auth").WithTags("Authentication");
 
-            auth.MapPost("/login", Login);
-            auth.MapPost("/refresh", Refresh);
+            auth.MapPost("/login", Login)
+                .AddEndpointFilter<ValidationFilter<LoginRequest>>();
+            auth.MapPost("/refresh", Refresh)
+                .AddEndpointFilter<ValidationFilter<RefreshTokenRequest>>();
+
+            auth.MapPost("/logout", Logout);
 
             return auth;
+        }
+
+        private static async Task<IResult> Logout(
+            RefreshTokenRequest req,
+            RefreshTokenService refresh,
+            CancellationToken ct)
+        {
+            await refresh.RevokeAsync(req.RefreshToken, ct);
+            return Results.NoContent();
         }
 
         private static async Task<IResult> Login(

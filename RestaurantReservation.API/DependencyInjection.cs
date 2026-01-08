@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RestaurantReservation.API.Authorization;
 using RestaurantReservation.API.Identity;
 using RestaurantReservation.API.Validations.Reservations;
@@ -13,16 +14,16 @@ namespace RestaurantReservation.API
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEndpointsApiExplorer()
-                    .AddSwaggerGen()
                     .AddProblemDetails()
                     .AddDbContexts(configuration)
                     .AddJwtAuthentication(configuration)
                     .AddAuthorizationPolicies()
                     .AddValidation()
-                    .AddBusinessServices();
+                    .AddBusinessServices()
+                    .AddSwaggerGen();
 
             return services;
         }
@@ -139,6 +140,41 @@ namespace RestaurantReservation.API
             // Later: services.AddScoped<IReservationService, ReservationService>();
 
             return services;
+        }
+
+
+        private static IServiceCollection AddSwaggerGen(this IServiceCollection services)
+        {
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantReservation API", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\""
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
+            return services;
+
         }
     }
 }

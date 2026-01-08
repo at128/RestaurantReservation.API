@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.API.Authorization;
 using RestaurantReservation.API.Contracts.Reservations;
 using RestaurantReservation.API.Filters;
@@ -15,35 +16,102 @@ namespace RestaurantReservation.API.Endpoints
                 .WithTags("Reservations");
 
             group.MapGet("/", GetReservations)
-                .RequireAuthorization(Permission.Reservations.Read);
+                .RequireAuthorization(Permission.Reservations.Read)
+                .WithName("GetReservations")
+                .WithSummary("Retrieve all reservations")
+                .WithDescription("Returns all reservations (latest first).")
+                .Produces<List<ReservationResponse>>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapGet("/{id:int}", GetReservationById)
-                .RequireAuthorization(Permission.Reservations.Read);
+                .RequireAuthorization(Permission.Reservations.Read)
+                .WithName("GetReservationById")
+                .WithSummary("Retrieve a reservation by id")
+                .WithDescription("Returns a single reservation if it exists.")
+                .Produces<ReservationResponse>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapGet("/customer/{customerId:int}", GetReservationsByCustomer)
-                .RequireAuthorization(Permission.Reservations.Read);
+                .RequireAuthorization(Permission.Reservations.Read)
+                .WithName("GetReservationsByCustomer")
+                .WithSummary("Retrieve reservations by customer id")
+                .WithDescription("Returns all reservations for a specific customer.")
+                .Produces<List<ReservationResponse>>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapGet("/{reservationId:int}/orders", GetReservationOrders)
-                .RequireAuthorization(Permission.Reservations.Read);
+                .RequireAuthorization(Permission.Reservations.Read)
+                .WithName("GetReservationOrders")
+                .WithSummary("Retrieve reservation orders")
+                .WithDescription("Returns all orders for a reservation.")
+                .Produces<List<ReservationOrderResponse>>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapGet("/{reservationId:int}/menu-items", GetReservationMenuItems)
-                .RequireAuthorization(Permission.Reservations.Read);
-
+                .RequireAuthorization(Permission.Reservations.Read)
+                .WithName("GetReservationMenuItems")
+                .WithSummary("Retrieve reservation ordered menu items")
+                .WithDescription("Returns aggregated menu items ordered in a reservation.")
+                .Produces<List<OrderedMenuItemResponse>>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapPost("/", CreateReservation)
                 .AddEndpointFilter<ValidationFilter<CreateReservationRequest>>()
-                .RequireAuthorization(Permission.Reservations.Create);
-
+                .RequireAuthorization(Permission.Reservations.Create)
+                .WithName("CreateReservation")
+                .WithSummary("Create a reservation")
+                .WithDescription("Creates a new reservation if customer/table exist and no conflict occurs.")
+                .Accepts<CreateReservationRequest>("application/json")
+                .Produces<ReservationResponse>(StatusCodes.Status201Created)
+                .Produces(StatusCodes.Status400BadRequest)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status409Conflict)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapPut("/{id:int}", UpdateReservation)
                 .AddEndpointFilter<ValidationFilter<UpdateReservationRequest>>()
-                .RequireAuthorization(Permission.Reservations.Update);
+                .RequireAuthorization(Permission.Reservations.Update)
+                .WithName("UpdateReservation")
+                .WithSummary("Update a reservation")
+                .WithDescription("Updates an existing reservation if it exists and no conflict occurs.")
+                .Accepts<UpdateReservationRequest>("application/json")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status400BadRequest)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status409Conflict)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             group.MapDelete("/{id:int}", DeleteReservation)
-                .RequireAuthorization(Permission.Reservations.Delete);
+                .RequireAuthorization(Permission.Reservations.Delete)
+                .WithName("DeleteReservation")
+                .WithSummary("Delete a reservation")
+                .WithDescription("Deletes a reservation by id if it exists.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status401Unauthorized)
+                .Produces(StatusCodes.Status403Forbidden)
+                .WithOpenApi();
 
             return group;
         }
+
 
         private static async Task<IResult> GetReservationMenuItems(int reservationId, RestaurantReservationDbContext db, CancellationToken ct)
         {
