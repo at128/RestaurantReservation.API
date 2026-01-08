@@ -9,7 +9,7 @@ namespace RestaurantReservation.API.Validations.Auth
         {
             RuleFor(r => r.RefreshToken)
                 .NotEmpty()
-                .Length(64);
+                .MaximumLength(200);
 
         }
     }
