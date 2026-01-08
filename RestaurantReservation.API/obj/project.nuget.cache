@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "F+Ct/XiaydY=",
+  "dgSpecHash": "mTr9VW6M75Y=",
   "success": true,
   "projectFilePath": "C:\\Atta\\RestaurantReservationORM-CompletingTheProject\\RestaurantReservationORM-CompletingTheProject\\RestaurantReservation.API\\RestaurantReservation.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Atta\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Atta\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\Atta\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
+    "C:\\Users\\Atta\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\12.1.1\\fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
     "C:\\Users\\Atta\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.22\\microsoft.aspnetcore.openapi.8.0.22.nupkg.sha512",
     "C:\\Users\\Atta\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Atta\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",

@@ -44,11 +44,11 @@ namespace RestaurantReservation.Db.Respositories
         public async Task<List<Order>> ListOrdersAndMenuItemsAsync(int reservationId)
         {
             return await _context.Orders
+                .Where(o => o.ReservationId == reservationId)
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.MenuItem)
                 .Include(o => o.Employee)
                 .Include(o => o.Reservation)
-                .Where(o => o.ReservationId == reservationId)
                 .ToListAsync();
         }
 

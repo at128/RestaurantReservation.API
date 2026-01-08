@@ -1,4 +1,5 @@
 using RestaurantReservation.API;
+using RestaurantReservation.API.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.MapApi();
 
 
 
