@@ -131,3 +131,6 @@ C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-C
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation\obj\Debug\net8.0\RestaurantReservation.genruntimeconfig.cache
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation\obj\Debug\net8.0\ref\RestaurantReservation.dll
 C:\Atta\RestaurantReservationORM-CompletingTheProject\RestaurantReservationORM-CompletingTheProject\RestaurantReservation\obj\Debug\net8.0\RestaurantReservation.sourcelink.json
+C:\Users\mratt\Source\Repos\RestaurantReservation.API\RestaurantReservation\obj\Debug\net8.0\RestaurantReservation.dll
+C:\Users\mratt\Source\Repos\RestaurantReservation.API\RestaurantReservation\obj\Debug\net8.0\refint\RestaurantReservation.dll
+C:\Users\mratt\Source\Repos\RestaurantReservation.API\RestaurantReservation\obj\Debug\net8.0\RestaurantReservation.pdb
