@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantReservation.Db;
 
@@ -11,9 +12,11 @@ using RestaurantReservation.Db;
 namespace RestaurantReservation.Db.Migrations
 {
     [DbContext(typeof(RestaurantReservationDbContext))]
-    partial class RestaurantReservationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260107161944_AddingJwtAuth")]
+    partial class AddingJwtAuth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,16 +192,6 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "11111111111111111111111111111111",
-                            Email = "admin@local.test",
-                            FirstName = "Admin",
-                            LastName = "User",
-                            PasswordHash = "100000.zqhmcwplPkAwxNhj63YRig==.BWPhDmlGk/LITlgqHLpSwAjiWu9EWHVtdaoLU6jt9GY="
-                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Models.Identity.Permission", b =>
@@ -216,48 +209,6 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasKey("PermissionId");
 
                     b.ToTable("Permissions");
-
-                    b.HasData(
-                        new
-                        {
-                            PermissionId = 1,
-                            Name = "Reservations.Create"
-                        },
-                        new
-                        {
-                            PermissionId = 2,
-                            Name = "Reservations.Read"
-                        },
-                        new
-                        {
-                            PermissionId = 3,
-                            Name = "Reservations.Update"
-                        },
-                        new
-                        {
-                            PermissionId = 4,
-                            Name = "Reservations.Delete"
-                        },
-                        new
-                        {
-                            PermissionId = 5,
-                            Name = "Reservations.Orders.Read"
-                        },
-                        new
-                        {
-                            PermissionId = 6,
-                            Name = "Reservations.MenuItems.Read"
-                        },
-                        new
-                        {
-                            PermissionId = 7,
-                            Name = "Employees.ViewManagers"
-                        },
-                        new
-                        {
-                            PermissionId = 8,
-                            Name = "Employees.ViewAvgOrderAmount"
-                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Models.Identity.RefreshToken", b =>
@@ -307,18 +258,6 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            Name = "User"
-                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Models.Identity.RolePermission", b =>
@@ -334,63 +273,6 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermissions");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 6
-                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Models.Identity.UserRole", b =>
@@ -406,13 +288,6 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "11111111111111111111111111111111",
-                            RoleId = 1
-                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Models.MenuItem", b =>
